@@ -397,16 +397,17 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
         }
         case MIDI_CONTINUOUS_CONTROLLER : {
             uint8_t num = midiEvent.data[1];
-            if (num == 3) {
-                uint8_t value = midiEvent.data[2];
-                pitchBendRamp.setTarget(((24.0f/127) * value)-12, true);
-            }
-            if (num == 7) {
-                uint8_t value = midiEvent.data[2];
-                masterVolumeRamp.setTarget((1.0f/127) * value, true);
+            uint8_t value = midiEvent.data[2];
+            switch(num) {
+                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, true);
+                case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, true);
+                case 2: sampler->setADSRAttackDurationSeconds((1.0f / 127) * value);
+                case 3: sampler->setADSRDecayDurationSeconds((1.0f / 127) * value);
+                case 4: sampler->setADSRSustainFraction((1.0f / 127) * value);
+                case 5: sampler->setADSRReleaseDurationSeconds((1.0f / 127) * value);
+                default: ();
             }
             if (num == 64) {
-                uint8_t value = midiEvent.data[2];
                 if (value <= 63) {
                     sampler->sustainPedal(false);
                 } else {
