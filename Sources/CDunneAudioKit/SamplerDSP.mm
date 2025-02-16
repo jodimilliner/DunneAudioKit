@@ -399,11 +399,11 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
             uint8_t num = midiEvent.data[1];
             if (num == 3) {
                 uint8_t value = midiEvent.data[2];
-                pitchBendRamp.setTarget(((24.0f/127) * value)-12, immediate);
+                pitchBendRamp.setTarget(((24.0f/127) * value)-12, true);
             }
             if (num == 7) {
                 uint8_t value = midiEvent.data[2];
-                masterVolumeRamp.setTarget((1.0f/127) * value, immediate);
+                masterVolumeRamp.setTarget((1.0f/127) * value, true);
             }
             if (num == 64) {
                 uint8_t value = midiEvent.data[2];
