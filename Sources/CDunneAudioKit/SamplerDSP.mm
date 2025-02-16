@@ -397,6 +397,14 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
         }
         case MIDI_CONTINUOUS_CONTROLLER : {
             uint8_t num = midiEvent.data[1];
+            if (num == 3) {
+                uint8_t value = midiEvent.data[2];
+                pitchBendRamp.setTarget(((24.0f/127) * value)-12, immediate);
+            }
+            if (num == 7) {
+                uint8_t value = midiEvent.data[2];
+                masterVolumeRamp.setTarget((1.0f/127) * value, immediate);
+            }
             if (num == 64) {
                 uint8_t value = midiEvent.data[2];
                 if (value <= 63) {
