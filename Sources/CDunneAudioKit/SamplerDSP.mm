@@ -399,13 +399,13 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
             uint8_t num = midiEvent.data[1];
             uint8_t value = midiEvent.data[2];
             switch(num) {
-                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, true);
-                case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, true);
-                case 2: sampler->setADSRAttackDurationSeconds((1.0f / 127) * value);
-                case 3: sampler->setADSRDecayDurationSeconds((1.0f / 127) * value);
-                case 4: sampler->setADSRSustainFraction((1.0f / 127) * value);
-                case 5: sampler->setADSRReleaseDurationSeconds((1.0f / 127) * value);
-                default: ();
+                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, true); break;
+                case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, true); break;
+                case 2: sampler->setADSRAttackDurationSeconds((1.0f / 127) * value); break;
+                case 3: sampler->setADSRDecayDurationSeconds((1.0f / 127) * value); break;
+                case 4: sampler->setADSRSustainFraction((1.0f / 127) * value); break;
+                case 5: sampler->setADSRReleaseDurationSeconds((1.0f / 127) * value); break;
+                default:  break;
             }
             if (num == 64) {
                 if (value <= 63) {
