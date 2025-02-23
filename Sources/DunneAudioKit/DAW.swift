@@ -3,7 +3,7 @@
 //  SimpleDaw
 //
 //  Created by Jodi Milliner on 12/02/2025.
-//  Da Fuq?
+//
 
 import Foundation
 import AudioKitEX
@@ -15,6 +15,7 @@ import AVFAudio
 class DAW: Sequencer, ObservableObject{
     static let shared = DAW()
     @Published var _isPlaying = false{ didSet{ _isPlaying ? _play() : pause()} }
+    var _tempo = 120.0{ didSet{tempo = _tempo} }
     @Published var masters = [URL]()
     let engine = AudioEngine()
     let output = Mixer()
@@ -31,14 +32,20 @@ class DAW: Sequencer, ObservableObject{
     required init(targetNodes: [any Node]? = nil){ fatalError("init(targetNodes:) has not been implemented") }
     
     func initClick(){
-        samplers["click"] = Sampler()
-        addTrack(for: samplers["click"]!)
-        output.addInput(samplers["click"]!)
-        samplers["click"]!.load(avAudioFile: try! AVAudioFile(forReading: Bundle.module.url(forResource: "click", withExtension: "wav")!))
-        let clickTrack = getTrackFor(node: samplers["click"]!)!
-        clickTrack.length = 4
-        for i in 0..<4{ clickTrack.add(noteNumber: 95, velocity: 70, position: Double(i), duration: 0.99) }
-        samplers["click"]!.masterVolume = 0
+        let session = URLSession.shared
+        let task = session.downloadTask(with: URL(string: "https://cdn.freesound.org/previews/250/250552_4570971-lq.mp3")!){ [self] (tempLocalURL, response, error) in
+            if let tempLocalURL{
+                samplers["click"] = Sampler()
+                addTrack(for: samplers["click"]!)
+                output.addInput(samplers["click"]!)
+                samplers["click"]!.load(avAudioFile: try! AVAudioFile(forReading: tempLocalURL))
+                let clickTrack = getTrackFor(node: samplers["click"]!)!
+                clickTrack.length = 4
+                for i in 0..<4{ clickTrack.add(noteNumber: 95, velocity: 70, position: Double(i), duration: 0.99) }
+                samplers["click"]!.masterVolume = 0
+            }
+        }
+        task.resume()
     }
     
     func bounce(_ songId: String, completion: @escaping (URL)->()){
@@ -67,7 +74,6 @@ class DAW: Sequencer, ObservableObject{
             try! engine.start()
             self.bouncing = false
             completion(url)
-//            FB.upload(url){  }
         } catch {
             print("xx Error during rendering: \(error)")
         }
@@ -75,9 +81,7 @@ class DAW: Sequencer, ObservableObject{
     
     func _play(){
         if _isPlaying{
-//            if let tempo = activeSong?.parameters["tempo"]?.value.d{
-//                self.tempo = tempo
-//            }
+            tempo = _tempo
             seek(to: tracks.first!.currentPosition)
             play()
         }
