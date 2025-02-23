@@ -12,17 +12,17 @@ import AudioKit
 import SwiftUI
 import AVFAudio
 
-class DAW: Sequencer, ObservableObject{
+public class DAW: Sequencer, ObservableObject{
     static let shared = DAW()
-    @Published var _isPlaying = false{ didSet{ _isPlaying ? _play() : pause()} }
+    @Published public var _isPlaying = false{ didSet{ _isPlaying ? _play() : pause()} }
     var _tempo = 120.0{ didSet{tempo = _tempo} }
-    @Published var masters = [URL]()
+    @Published public var masters = [URL]()
     let engine = AudioEngine()
     let output = Mixer()
     var samplers = [String : Sampler]()
-    @Published var bouncing = false
+    @Published public var bouncing = false
     
-    init(){
+    public init(){
         super.init()
         engine.output = output
         try! engine.start()
