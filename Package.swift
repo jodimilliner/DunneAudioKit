@@ -13,7 +13,15 @@ let package = Package(
         .package(url: "https://github.com/AudioKit/AudioKitEX", from: "5.6.0"),
     ],
     targets: [
-        .target(name: "DunneAudioKit", dependencies: ["AudioKit", "AudioKitEX", "CDunneAudioKit"]),
+        .target(
+            name: "DunneAudioKit", 
+            resources: [
+                .process("click.wav"),
+                .process("chordMapPop.json"),
+                .process("chordMapJazz.json")
+            ],
+            dependencies: ["AudioKit", "AudioKitEX", "CDunneAudioKit"]
+        ),
         .target(
             name: "CDunneAudioKit",
             dependencies: ["AudioKit", "AudioKitEX", "KissFFT"],
