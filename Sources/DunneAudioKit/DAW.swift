@@ -13,7 +13,7 @@ import SwiftUI
 import AVFAudio
 
 public class DAW: Sequencer, ObservableObject{
-    static let shared = DAW()
+    static public let shared = DAW()
     @Published public var _isPlaying = false{ didSet{ _isPlaying ? _play() : pause()} }
     var _tempo = 120.0{ didSet{tempo = _tempo} }
     @Published public var masters = [URL]()
