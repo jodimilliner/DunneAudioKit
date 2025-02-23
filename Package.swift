@@ -15,11 +15,11 @@ let package = Package(
     targets: [
         .target(
             name: "DunneAudioKit", 
-            resources: [
-                .process("click.wav"),
-                .process("chordMapPop.json"),
-                .process("chordMapJazz.json")
-            ],
+            // resources: [
+            //     .process("click.wav"),
+            //     .process("chordMapPop.json"),
+            //     .process("chordMapJazz.json")
+            // ],
             dependencies: ["AudioKit", "AudioKitEX", "CDunneAudioKit"]
         ),
         .target(
