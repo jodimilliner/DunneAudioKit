@@ -400,8 +400,8 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
             uint8_t num = midiEvent.data[1];
             uint8_t value = midiEvent.data[2];
             switch(num) {
-                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, true); break;
-                case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, true); break;
+                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, false); break;
+                case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, false); break;
                 case 2: sampler->setADSRAttackDurationSeconds((1.0f / 127) * value); break;
                 case 3: sampler->setADSRDecayDurationSeconds((1.0f / 127) * value); break;
                 case 4: sampler->setADSRSustainFraction((1.0f / 127) * value); break;
