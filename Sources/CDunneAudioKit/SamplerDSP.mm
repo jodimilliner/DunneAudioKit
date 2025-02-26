@@ -152,7 +152,6 @@ SamplerDSP::SamplerDSP()
     sampler.set(new CoreSampler);
     sampler.update();
     masterVolumeRamp.setTarget(1.0, true);
-    masterVolumeRamp.setRampDuration(0.1, 44100);
     pitchBendRamp.setTarget(0.0, true);
     vibratoDepthRamp.setTarget(0.0, true);
     vibratoFrequencyRamp.setTarget(5.0, true);
@@ -400,7 +399,10 @@ void SamplerDSP::handleMIDIEvent(const AUMIDIEvent &midiEvent)
             uint8_t num = midiEvent.data[1];
             uint8_t value = midiEvent.data[2];
             switch(num) {
-                case 0: masterVolumeRamp.setTarget((1.0f / 127) * value, false); break;
+                case 0: 
+                    masterVolumeRamp.setTarget((1.0f / 127) * value, false); 
+                    masterVolumeRamp.setRampDuration(0.1, 44100);
+                    break;
                 case 1: pitchBendRamp.setTarget(((24.0f / 127) * value) - 12, false); break;
                 case 2: sampler->setADSRAttackDurationSeconds((1.0f / 127) * value); break;
                 case 3: sampler->setADSRDecayDurationSeconds((1.0f / 127) * value); break;
