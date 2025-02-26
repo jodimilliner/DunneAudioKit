@@ -152,6 +152,7 @@ SamplerDSP::SamplerDSP()
     sampler.set(new CoreSampler);
     sampler.update();
     masterVolumeRamp.setTarget(1.0, true);
+    masterVolumeRamp.setRampDuration(0.1, 44100);
     pitchBendRamp.setTarget(0.0, true);
     vibratoDepthRamp.setTarget(0.0, true);
     vibratoFrequencyRamp.setTarget(5.0, true);
